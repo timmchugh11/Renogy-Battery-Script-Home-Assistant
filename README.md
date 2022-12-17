@@ -1,9 +1,9 @@
 # Renogy Smart Battery - Home-Assistant
 
-A simple script I made to send infomation to Home Assistant from Renogy Smart Batteries.
+A simple script I made to send information to Home Assistant from Renogy Smart Batteries.
 
 
-I use it with four batteries, If you want to use it with more than one you need to connect to each battery seperatly first to change the address.
+I use it with four batteries, If you want to use it with more than one you need to connect to each battery separately first to change the address.
 
 ```
 #Set the battery address to change (change to desired address), Set to false to get info
