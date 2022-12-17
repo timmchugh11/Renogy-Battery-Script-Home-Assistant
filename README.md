@@ -1,4 +1,4 @@
-# Renogy-Battery-Script-Home-Assistant
+# Renogy Smart Battery - Home-Assistant
 
 A simple script I made to send infomation to Home Assistant from Renogy Smart Batteries.
 
