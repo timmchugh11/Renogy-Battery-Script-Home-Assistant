@@ -14,15 +14,16 @@ template:
         state: "{{ trigger.json.current }}"
         unit_of_measurement: 'A'
 
-      - name: "Battery 1 Name"
-        state: "Battery 1:"
+      - name: "Battery 1 Voltage"
+        state: "{{ trigger.json.voltage }}"
+        unit_of_measurement: 'V'
 
       - name: "Battery 1 Wattage"
         state: "{{ trigger.json.wattage }}"
         unit_of_measurement: 'W'
 
       - name: "Battery 1 Wh"
-        state: "{{ (float(states('sensor.battery_voltage')) * float(trigger.json.percent)) | round(2) }}"
+        state: "{{ (float(states('sensor.battery_1_voltage')) * float(trigger.json.percent)) | round(2) }}"
         unit_of_measurement: 'Wh'
 
   - trigger:
@@ -40,15 +41,16 @@ template:
         state: "{{ trigger.json.current }}"
         unit_of_measurement: 'A'
 
-      - name: "Battery 2 Name"
-        state: "Battery 2:"
+      - name: "Battery 2 Voltage"
+        state: "{{ trigger.json.voltage }}"
+        unit_of_measurement: 'V'
 
       - name: "Battery 2 Wattage"
         state: "{{ trigger.json.wattage }}"
         unit_of_measurement: 'W'
 
       - name: "Battery 2 Wh"
-        state: "{{ (float(states('sensor.battery_voltage')) * float(trigger.json.percent)) | round(2) }}"
+        state: "{{ (float(states('sensor.battery_2_voltage')) * float(trigger.json.percent)) | round(2) }}"
         unit_of_measurement: 'Wh'
 
   - trigger:
@@ -65,16 +67,17 @@ template:
       - name: "Battery 3 Current"
         state: "{{ trigger.json.current }}"
         unit_of_measurement: 'A'
-      
-      - name: "Battery 3 Name"
-        state: "Battery 3:"
+
+      - name: "Battery 3 Voltage"
+        state: "{{ trigger.json.voltage }}"
+        unit_of_measurement: 'V'
 
       - name: "Battery 3 Wattage"
         state: "{{ trigger.json.wattage }}"
         unit_of_measurement: 'W'
 
       - name: "Battery 3 Wh"
-        state: "{{ (float(states('sensor.battery_voltage')) * float(trigger.json.percent)) | round(2) }}"
+        state: "{{ (float(states('sensor.battery_3_voltage')) * float(trigger.json.percent)) | round(2) }}"
         unit_of_measurement: 'Wh'
 
   - trigger:
@@ -92,20 +95,21 @@ template:
         state: "{{ trigger.json.current }}"
         unit_of_measurement: 'A'
 
-      - name: "Battery 4 Name"
-        state: "Battery 4:"
+      - name: "Battery 4 Voltage"
+        state: "{{ trigger.json.voltage }}"
+        unit_of_measurement: 'V'
 
       - name: "Battery 4 Wattage"
         state: "{{ trigger.json.wattage }}"
         unit_of_measurement: 'W'
 
       - name: "Battery 4 Wh"
-        state: "{{ (float(states('sensor.battery_voltage')) * float(trigger.json.percent)) | round(2) }}"
+        state: "{{ (float(states('sensor.battery_4_voltage')) * float(trigger.json.percent)) | round(2) }}"
         unit_of_measurement: 'Wh'
 
   - trigger:
       - platform: webhook
-        webhook_id: battery
+        webhook_id: batterytotal
     sensor:
       - name: "Battery Percent"
         state: "{{ trigger.json.percent }}"
@@ -113,6 +117,12 @@ template:
 
       - name: "Battery Wattage"
         state: "{{ trigger.json.wattage }}"
+        device_class: power
+        unique_id: "sensor.battery_voltage"
+        unit_of_measurement: W
+
+      - name: "Battery Voltage"
+        state: "{{ trigger.json.voltage }}"
         device_class: power
         unique_id: "sensor.battery_wattage"
         unit_of_measurement: W

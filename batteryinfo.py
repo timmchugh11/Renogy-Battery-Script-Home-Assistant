@@ -85,7 +85,7 @@ else:
         
         for battery in battery_addresses:    
             voltage = info[str(battery) + "volts"] 
-            curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"current":"' + str(info[str(battery) + "amps"] ) + '","percent":"' + str(info[str(battery) + "percentage"]) + '","status":"' + str(info[str(battery) + "state"]) + '","wattage":"' + str(round(float(info[str(battery) + "amps"]) * float(voltage),2)) + '"}\' http://' + ha_url + '/api/webhook/battery'+str(battery)
+            curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"current":"' + str(info[str(battery) + "amps"] ) + '","percent":"' + str(info[str(battery) + "percentage"]) + '","status":"' + str(info[str(battery) + "state"]) + '","voltage":"' + str(info[str(battery) + "volts"]) + '","wattage":"' + str(round(float(info[str(battery) + "amps"]) * float(voltage),2)) + '"}\' http://' + ha_url + '/api/webhook/battery'+str(battery)
             os.system(curlcmd)
         total_amps = 0
         for battery in battery_addresses:
@@ -100,6 +100,8 @@ else:
                 total_percentage = line
         ave_amps.append(total_amps)
         wattage = round(float(voltage) * total_amps)
+        curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"current":"' + str(total_amps) + '","percent":"' + str(total_percentage) + '","wattage":"' + str(wattage) + '","voltage":"' + str(total_voltage) + '"}\' http://' + ha_url + '/api/webhook/batterypack'
+        os.system(curlcmd)
 
         if datetime.now().second > 55 and time_rem_check == False:
             if len(ave_amps) > 0:
@@ -120,9 +122,11 @@ else:
                 time_rem_check = True
                 curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"time_rem":"' + str(string) + '"}\' http://' + ha_url + '/api/webhook/batteryrem'
                 os.system(curlcmd)
-
-        curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"current":"' + str(total_amps) + '","percent":"' + str(total_percentage) + '","wattage":"' + str(wattage) + '"}\' http://' + ha_url + '/api/webhook/battery'
-        os.system(curlcmd)
+                total_voltage = 0
+                for battery in battery_addresses:
+                    total_voltage = total_voltage + info[str(battery) + "volts"]
+                total_voltage = total_voltage / len(battery_addresses)
+                total_voltage = round(total_voltage,2)
 
         if wattage < 0:
             inwatt = 0
@@ -132,6 +136,7 @@ else:
             outwatt = 0
         curlcmd = 'curl --header "Content-Type: application/json" --request POST --data \'{"in":"' + str(inwatt) + '","out":"' + str(outwatt) + '"}\' http://' + ha_url + '/api/webhook/batteryinout'
         os.system(curlcmd)
+        
         if custom_address:
             for battery in battery_addresses:
                 print('Battery ' + str(battery_addresses[battery]) + ' Custom Address Value: ' + str(battery_addresses[battery].custom(custom_address)))
