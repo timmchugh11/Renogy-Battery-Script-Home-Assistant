@@ -34,7 +34,7 @@ class RenogySmartBattery(minimalmodbus.Instrument):
 
     def amps(self):
         r = self.read_register(5042)
-        return r / 100.0 if r < 61440 else (r - 65535) / 100.0
+        return r / 100.0 if r < 32768 else (r - 65535) / 100.0
 
     def volts(self):
         return self.read_register(5043) / 10.0
